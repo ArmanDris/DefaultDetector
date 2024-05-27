@@ -1,18 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
 from model_building.custom_mapper import CustomMapper
 import joblib
 import pandas as pd
 import random
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='ui/build', static_url_path='')
 CORS(app)
 
 cat_boost_model = joblib.load('model_building/cat_boost_predictor.joblib')
-
-@app.route("/", methods=["GET", "POST"])
-def index():
-    return "Hello, i am the backend"
 
 @app.route("/getSample", methods=["GET"])
 def getSampleClients():
@@ -35,6 +31,11 @@ def moment_prediction():
         'predictions': predictions,
     }
     return body
+
+@app.route('/')
+@app.route('/<path:path>')
+def serve(path='index.html'):
+    return send_from_directory(app.static_folder, path)
 
 if __name__ == '__main__':
     app.run()

@@ -11,8 +11,8 @@
     let false_negative = 0;
 
     let accuracy = 0;
-    let f1 = 0;
-    let recall = 0;
+    let f1 = 'NA';
+    let recall = 'NA';
 
     function calculateMetrics() {
         true_positive = 0;
@@ -43,12 +43,12 @@
 
     function calculateF1() {
         const precision = true_positive / (true_positive + false_positive) || 0;
-        const recall = true_positive / (true_positive + false_negative) || 0;
-        f1 = precision + recall !== 0 ? (2 * precision * recall) / (precision + recall) : 0;
+        const recalculatedRecall = true_positive / (true_positive + false_negative) || 0;
+        f1 = (precision + recalculatedRecall) !== 0 ? (2 * precision * recalculatedRecall) / (precision + recalculatedRecall) : 'NA';
     }
 
     function calculateRecall() {
-        recall = true_positive / (true_positive + false_negative)
+        recall = true_positive / (true_positive + false_negative) || 'NA';
     }
 
     function mapStats(val) {
@@ -58,18 +58,17 @@
     $: if (predictions && answers) {
         calculateMetrics();
     }
-
 </script>
 
 <h2 class="font-sans text-[28px] text-black mt-4">Model got an accuracy of {accuracy}%</h2>
 <div class="my-2 mb-4">
-    <span class="text-black font-sans mr-4">F1 score: {f1.toFixed(2)} 
+    <span class="text-black font-sans mr-4">F1 score: {typeof f1 === 'number' ? f1.toFixed(2) : f1}
         <span class="tooltip">
             <FontAwesomeIcon icon={faInfoCircle} class="icon-info" style="color: rgba(0, 0, 0, 0.5);"/>
             <span class="tooltiptext">F1 Score is a scoring metric that compensates for class imbalance.</span>
         </span>
     </span>
-    <span class="text-black font-sans">Recall: {recall.toFixed(2)} 
+    <span class="text-black font-sans">Recall: {typeof recall === 'number' ? recall.toFixed(2) : recall} 
         <span class="tooltip">
             <FontAwesomeIcon icon={faInfoCircle} class="icon-info" style="color: rgba(0, 0, 0, 0.5);"/>
             <span class="tooltiptext">Recall is only concerned about detecting people who defaulted. It does not care how many correct PAID predictions we made.</span>
@@ -120,6 +119,5 @@
     .tooltip:hover .tooltiptext {
         visibility: visible;
         padding: 24px;
-        
     }
 </style>

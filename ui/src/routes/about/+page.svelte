@@ -1,7 +1,3 @@
-<script context="module">
-    export const prerender = true;
-</script>
-
 <div class="w-[50%] mt-16 mx-auto">
     <h1>Dataset & Metrics</h1>
     <p>
