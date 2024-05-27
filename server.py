@@ -3,7 +3,6 @@ from flask_cors import CORS
 import joblib
 import pandas as pd
 import random
-from custom_mapper.custom_mapper import CustomMapper
 
 cat_boost_model = joblib.load('model_building/cat_boost_predictor.joblib')
 
