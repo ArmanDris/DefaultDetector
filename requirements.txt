@@ -2,7 +2,7 @@ blinker==1.8.2
 catboost==1.2.5
 click==8.1.7
 contourpy==1.2.1
--e git+https://github.com/ArmanDris/DefaultDetector.git@306a33ef536bea42c42f7fe13845bc10d8862347#egg=custom_mapper
+-e git+https://github.com/ArmanDris/DefaultDetector.git@e7d215b1c57642a04f0ea4c63b8d11248f141a0e#egg=custom_mapper
 cycler==0.12.1
 Flask==3.0.3
 Flask-Cors==4.0.1
