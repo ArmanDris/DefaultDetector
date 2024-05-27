@@ -18,7 +18,7 @@
         ids = undefined
         answers = undefined
         predictions = undefined
-        fetch("http://0.0.0.0:5000/getSample")
+        fetch("/getSample")
             .then((response) => response.text())
             .then((data) => {
                 customersTable = data;
@@ -27,7 +27,7 @@
     }
 
     export async function runPredictions() {
-        fetch("http://0.0.0.0:5000/predict", {
+        fetch("/predict", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ customersTable }) // Send table as string as key 'customersTable'
