@@ -3,26 +3,7 @@ from flask_cors import CORS
 import joblib
 import pandas as pd
 import random
-
-# CUSTOMER MAPPER USED IN ML MODEL
-from sklearn.base import BaseEstimator, TransformerMixin
-class CustomMapper(BaseEstimator, TransformerMixin):
-    def __init__(self):
-        # Order is: unknown, unknown, other, high-school, university, grad-school
-        self.mapping = {0: 0, 5: 1, 6: 2, 4: 3, 3: 4, 2: 5, 1: 6}
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X):
-        return X.apply(lambda col: col.map(self.mapping))
-
-def load_model(path):
-    # Make sure the CustomMapper class is in the globals
-    globals()['CustomMapper']
-    return joblib.load(path)
-
-cat_boost_model = load_model('model_building/cat_boost_predictor.joblib')
+from custom_mapper import CustomMapper
 
 cat_boost_model = joblib.load('model_building/cat_boost_predictor.joblib')
 
