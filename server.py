@@ -11,9 +11,9 @@ CORS(app)
 
 @app.route("/getSample", methods=["GET"])
 def getSampleClients():
-    # Get 10 random rows
+    # Get 1000 random rows
     header = pd.read_csv('model_building/data/UCI_Credit_Card.csv', nrows=1)
-    sample = pd.read_csv('model_building/data/UCI_Credit_Card.csv', skiprows=random.randint(0, 5000), nrows=10, header=None)
+    sample = pd.read_csv('model_building/data/UCI_Credit_Card.csv', skiprows=random.randint(0, 5000), nrows=1000, header=None)
     sample.columns = header.columns
     return sample.to_html()
 

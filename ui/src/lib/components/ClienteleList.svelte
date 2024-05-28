@@ -71,7 +71,7 @@
 </script>
 
 <div id="list" class="w-full mt-16 min-h-[75vh]">
-    <h2 class="my-4 font-sans text-[28px] text-black">Sample of 10 clients:</h2>
+    <h2 class="my-4 font-sans text-[28px] text-black">Sample of 1000 clients:</h2>
     <div class="h-[300px] w-full overflow-scroll">{@html customersTable}</div>
     <button class="bg-[#d3368240] text-[#d33682]" on:click={getCustomers}>Get new Sample<FontAwesomeIcon icon={faArrowsRotate} class="w-[1em] h-[1em] px-2 inline" /></button>
     <button class="bg-[#85990040] text-[#859900]" on:click={runPredictions}>Run Prediction<FontAwesomeIcon icon={faForward} class="w-[1em] h-[1em] px-2 inline" /></button>

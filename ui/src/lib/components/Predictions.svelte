@@ -1,18 +1,21 @@
 <script>
+    import { onMount } from 'svelte';
     import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
     import { FontAwesomeIcon } from '@fortawesome/svelte-fontawesome';
 
     export let ids;
     export let predictions;
     export let answers;
-    let true_positive = 0;
-    let true_negative = 0;
-    let false_positive = 0;
-    let false_negative = 0;
 
-    let accuracy = 0;
-    let f1 = 'NA';
-    let recall = 'NA';
+    let true_positive;
+    let true_negative;
+    let false_positive;
+    let false_negative;
+
+    let accuracy;
+    let recall;
+    let precision;
+    let f1;
 
     function calculateMetrics() {
         true_positive = 0;
@@ -20,58 +23,73 @@
         false_positive = 0;
         false_negative = 0;
 
-        predictions.forEach((prediction, index) => {
-            const answer = answers[index];
-            if (answer === 0) {
-                if (prediction === 0) true_negative += 1;
-                else false_positive += 1;
-            } else if (answer === 1) {
-                if (prediction === 0) false_negative += 1;
-                else true_positive += 1;
-            }
-        });
+        for (let i = 0; i < predictions.length; i++) 
+        {
+            const prediction = predictions[i]
+            const answer = answers[i]
 
-        calculateAccuracy();
-        calculateF1();
-        calculateRecall();
-    }
+            if (answer === 1 && prediction === 1) { true_positive+=1 }
+            if (answer === 1 && prediction === 0) { false_negative+=1 }
+            if (answer === 0 && prediction === 1) { false_positive+=1 }
+            if (answer === 0 && prediction === 0) { true_negative+=1; }
+        }
 
-    function calculateAccuracy() {
-        const total = true_positive + true_negative + false_positive + false_negative;
-        accuracy = total > 0 ? ((true_positive + true_negative) / total) * 100 : 0;
-    }
+        console.log("True positive: " + true_positive)
+        console.log("True negative: " + true_negative)
+        console.log("False positive: " + false_positive)
+        console.log("False negative: " + false_negative)
 
-    function calculateF1() {
-        const precision = true_positive / (true_positive + false_positive) || 0;
-        const recalculatedRecall = true_positive / (true_positive + false_negative) || 0;
-        f1 = (precision + recalculatedRecall) !== 0 ? (2 * precision * recalculatedRecall) / (precision + recalculatedRecall) : 'NA';
-    }
+        accuracy = (true_positive + true_negative) / (true_positive + true_negative + false_positive + false_negative) * 100
 
-    function calculateRecall() {
-        recall = true_positive / (true_positive + false_negative) || 'NA';
+        if (true_positive + false_negative !== 0) {
+            recall = true_positive / (true_positive + false_negative)
+        } else {
+            recall = 'NA'
+        }
+
+        if (false_positive + true_negative !== 0) {
+            precision = true_negative / (true_negative + false_positive)
+        } else { 
+            precision = 'NA'
+        }
+
+        if (recall !== 'NA' && precision !== 'NA') {
+            f1 = 2 * (precision * recall) / (precision + recall)
+        } else {
+            f1 = 'NA'
+        }
+
+        if (recall !== 'NA') { recall = recall.toFixed(2) }
+        if (precision !== 'NA') { precision = precision.toFixed(2) }
+        if (f1 !== 'NA') { f1 = f1.toFixed(2) }
+        accuracy = accuracy.toFixed(2)
     }
 
     function mapStats(val) {
         return val === 0 ? 'PAID' : 'DEFAULTED';
     }
 
-    $: if (predictions && answers) {
-        calculateMetrics();
-    }
+    onMount(() => {calculateMetrics();} )
 </script>
 
 <h2 class="font-sans text-[28px] text-black mt-4">Model got an accuracy of {accuracy}%</h2>
 <div class="my-2 mb-4">
-    <span class="text-black font-sans mr-4">F1 score: {typeof f1 === 'number' ? f1.toFixed(2) : f1}
+    <span class="text-black font-sans mr-4">F1 score: {f1}
         <span class="tooltip">
             <FontAwesomeIcon icon={faInfoCircle} class="icon-info" style="color: rgba(0, 0, 0, 0.5);"/>
             <span class="tooltiptext">F1 Score is a scoring metric that compensates for class imbalance.</span>
         </span>
     </span>
-    <span class="text-black font-sans">Recall: {typeof recall === 'number' ? recall.toFixed(2) : recall} 
+    <span class="text-black font-sans mr-4">Recall: {recall} 
         <span class="tooltip">
             <FontAwesomeIcon icon={faInfoCircle} class="icon-info" style="color: rgba(0, 0, 0, 0.5);"/>
-            <span class="tooltiptext">Recall is only concerned about detecting people who defaulted. It does not care how many correct PAID predictions we made.</span>
+            <span class="tooltiptext">Recall is only concerned with how the model predicted people who defaulted.</span>
+        </span>
+    </span>
+    <span class="text-black font-sans">Precision: {precision} 
+        <span class="tooltip">
+            <FontAwesomeIcon icon={faInfoCircle} class="icon-info" style="color: rgba(0, 0, 0, 0.5);"/>
+            <span class="tooltiptext">Precision is only concerned with how the model predicted people who did not default.</span>
         </span>
     </span>
 </div>

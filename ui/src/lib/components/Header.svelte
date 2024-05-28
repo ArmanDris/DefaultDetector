@@ -15,7 +15,7 @@
     <div class="text-[20px]">
         <a href="/" class="px-2" class:bold={path === '/'}>HOME</a>
         <a href="/about" class="px-2" class:bold={path === '/about'}>ABOUT</a>
-        <a href="https://github.com/ArmanDris/DefaultDetector" class="px-2" target="_blank">SOURCE CODE<FontAwesomeIcon icon={faExternalLinkSquareAlt} class='ml-[6px] w-[1em] h-[1em] px-2 inline'/></a>
+        <a href="https://github.com/ArmanDris/DefaultDetector" class="px-2" target="_blank">SOURCE CODE<FontAwesomeIcon icon={faExternalLinkSquareAlt} class='ml-[6px] w-[1em] h-[1em] inline'/></a>
     </div>
 </header>
 
