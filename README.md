@@ -4,4 +4,4 @@ This is a school project I extended into a full web app. Using the website you c
 
 The backend is running a flask server and the frontend is a static build I make with SvelteKit.
 
-https://defaultdetector.onrender.com/
+[https://defaultdetector.drismir.ca/](https://defaultdetector.drismir.ca/)
