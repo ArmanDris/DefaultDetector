@@ -1,0 +1,6 @@
+services:
+  DefaultDetector:
+    build: .
+    ports:
+      - "5000:5000"
+    container_name: flask-gunicorn-app
